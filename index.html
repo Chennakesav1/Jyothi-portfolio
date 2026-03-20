@@ -71,9 +71,24 @@
         .hero-content h2 { font-size: 1rem; color: var(--accent-main); font-weight: 600; margin-bottom: 1rem; letter-spacing: 2px; text-transform: uppercase;}
         .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1rem 0; color: var(--text-main); letter-spacing: -1px; }
         
-        /* Updated Typing Effect Styling */
-        .typing-container { font-size: clamp(1.8rem, 3vw, 2.5rem); color: var(--accent-main); font-weight: 700; margin-bottom: 1.5rem; text-shadow: var(--accent-glow); min-height: 50px; display: flex; align-items: center;}
-        .typed-text { border-right: 3px solid var(--accent-main); padding-right: 8px; animation: blinkCursor 0.7s step-end infinite; }
+        /* Updated Typing Effect Styling - FIXED FOR SHAKING */
+        .typing-container { 
+            font-size: clamp(1.8rem, 3vw, 2.5rem); 
+            color: var(--accent-main); 
+            font-weight: 700; 
+            margin-bottom: 1.5rem; 
+            text-shadow: var(--accent-glow); 
+            height: 60px; /* Fixed height prevents vertical jumping */
+            display: flex; 
+            align-items: center;
+            white-space: nowrap; /* Prevents wrapping to a second line */
+        }
+        .typed-text { 
+            border-right: 3px solid var(--accent-main); 
+            padding-right: 8px; 
+            animation: blinkCursor 0.7s step-end infinite; 
+            white-space: nowrap;
+        }
         @keyframes blinkCursor { 50%, 100% { border-color: transparent; } 0% { border-color: var(--accent-main); } }
         
         .hero p { font-size: clamp(1rem, 1.8vw, 1.1rem); color: var(--text-muted); max-width: 600px; margin-bottom: 2rem; line-height: 1.8; }
@@ -285,7 +300,16 @@
             .rotating-ring { width: 280px; height: 280px; }
             .rotating-ring.inner { width: 310px; height: 310px; }
 
-            .typing-container { font-size: 1.6rem; min-height: 40px; justify-content: center; }
+            /* SHAKE FIX FOR MOBILE */
+            .typing-container { 
+                font-size: 1.6rem; 
+                height: 40px; 
+                width: 280px; /* Fixed width stops the horizontal jumping */
+                max-width: 100%;
+                margin: 0 auto 1.5rem auto; 
+                justify-content: flex-start; /* Aligns text left inside the centered box */
+            }
+            
             .featured-icons { flex-wrap: wrap; justify-content: center; gap: 1.2rem;}
             .f-icon-container i { font-size: 1.5rem; }
             
