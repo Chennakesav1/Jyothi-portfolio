@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Durga Jyothi Vadlamuri | UI/UX Designer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        /* CSS Variables for Elegant Grey-Blue Glass Theme */
+        :root {
+            --bg-dark: #020617; 
+            --bg-light: #0f172a; 
+            --bg-card: rgba(15, 23, 42, 0.6); 
+            --accent-main: #38bdf8; 
+            --accent-glow: 0 0 15px rgba(56, 189, 248, 0.4), 0 0 30px rgba(56, 189, 248, 0.2);
+            --accent-rainbow: linear-gradient(90deg, #00f0ff, #ff00ea, #ff7300, #00f0ff);
+            
+            --glass-bg: rgba(30, 41, 59, 0.35); 
+            --glass-border: rgba(148, 163, 184, 0.15);
+            --glass-hover: rgba(51, 65, 85, 0.5);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            
+            --text-main: #f8fafc; 
+            --text-muted: #94a3b8; 
+            --section-gap: clamp(4rem, 8vh, 6rem); /* Controls spacing between sections dynamically */
+        }
+
+        /* Ambient Background */
+        body {
+            background-color: var(--bg-dark);
+            background-image: radial-gradient(circle at 15% 50%, rgba(15, 23, 42, 1), transparent 50%), 
+                              radial-gradient(circle at 85% 30%, rgba(30, 41, 59, 1), transparent 50%);
+            color: var(--text-main); margin: 0; font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden; line-height: 1.6; scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent; 
+        }
+        body::before {
+            content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            opacity: 0.03; pointer-events: none; z-index: -1;
+            background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Noise_Texture.png");
+        }
+
+        #scroll-progress { position: fixed; top: 0; left: 0; width: 0%; height: 4px; background: var(--accent-main); box-shadow: var(--accent-glow); z-index: 2000; }
+
+        @media (pointer: fine) { * { cursor: none; } }
+        .cursor-dot { position: fixed; width: 8px; height: 8px; background: #fff; border-radius: 50%; z-index: 10000; pointer-events: none; }
+        .cursor-outline { position: fixed; width: 40px; height: 40px; border: 1px solid var(--accent-main); border-radius: 50%; z-index: 9999; pointer-events: none; transition: width 0.2s, height 0.2s; opacity: 0.5; }
+
+        h2.section-title { font-size: clamp(2.5rem, 5vw, 3.5rem); margin-bottom: 0.5rem; text-align: center; color: var(--text-main); }
+        h2.section-title span { color: var(--accent-main); text-shadow: var(--accent-glow); }
+        .section-subtitle { text-align: center; color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto 4rem auto; }
+
+        .glass-panel { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid var(--glass-border); border-radius: 20px; padding: 2.5rem; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--glass-shadow); }
+        @media (hover: hover) { .glass-panel:hover { background: var(--glass-hover); border-color: rgba(56, 189, 248, 0.3); transform: translateY(-5px); box-shadow: 0 15px 40px rgba(0,0,0,0.6), var(--accent-glow); } }
+
+        /* Navigation */
+        header { position: fixed; top: 0; width: 100%; padding: 1.2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(2, 6, 23, 0.7); backdrop-filter: blur(15px); border-bottom: 1px solid var(--glass-border); box-sizing: border-box; }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--text-main); text-decoration: none; position: relative; z-index: 1001; letter-spacing: -0.5px;}
+        .logo span { color: var(--accent-main); text-shadow: var(--accent-glow); }
+        .menu-toggle { display: none; color: var(--text-main); font-size: 1.5rem; z-index: 1001; cursor: pointer; transition: transform 0.2s ease; }
+        .menu-toggle:active { transform: scale(0.85); color: var(--accent-main); }
+        nav ul { display: flex; gap: 2.5rem; list-style: none; margin: 0; padding: 0;}
+        nav a { color: var(--text-muted); text-decoration: none; font-weight: 500; transition: 0.3s; font-size: 0.95rem; }
+        nav a:hover, nav a.active { color: var(--text-main); text-shadow: 0 0 10px rgba(255, 255, 255, 0.4); }
+
+        section { padding: var(--section-gap) 10%; display: flex; flex-direction: column; justify-content: center; }
+
+        /* Hero Layout Match */
+        .hero { display: flex; flex-direction: row; align-items: center; justify-content: space-between; gap: 4rem; padding-top: 140px; }
+        .hero-content { flex: 1.2; text-align: left; }
+        .hero-content h2 { font-size: 1rem; color: var(--accent-main); font-weight: 600; margin-bottom: 1rem; letter-spacing: 2px; text-transform: uppercase;}
+        .hero h1 { font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.1; margin: 0 0 1rem 0; color: var(--text-main); letter-spacing: -1px; }
+        
+        /* Updated Typing Effect Styling */
+        .typing-container { font-size: clamp(1.8rem, 3vw, 2.5rem); color: var(--accent-main); font-weight: 700; margin-bottom: 1.5rem; text-shadow: var(--accent-glow); min-height: 50px; display: flex; align-items: center;}
+        .typed-text { border-right: 3px solid var(--accent-main); padding-right: 8px; animation: blinkCursor 0.7s step-end infinite; }
+        @keyframes blinkCursor { 50%, 100% { border-color: transparent; } 0% { border-color: var(--accent-main); } }
+        
+        .hero p { font-size: clamp(1rem, 1.8vw, 1.1rem); color: var(--text-muted); max-width: 600px; margin-bottom: 2rem; line-height: 1.8; }
+        
+        /* Featured Work Row */
+        .featured-work { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+        .featured-label { font-size: 0.85rem; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase; font-weight: 600;}
+        .featured-icons { display: flex; gap: 1.5rem; }
+        .f-icon-container { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; color: var(--accent-main); text-decoration: none; transition: 0.3s; cursor: pointer; }
+        .f-icon-container i { font-size: 1.8rem; }
+        .f-icon-container span { font-size: 0.75rem; color: var(--text-muted); font-weight: 500; }
+        @media (hover: hover) { .f-icon-container:hover { transform: translateY(-5px); color: var(--text-main); text-shadow: var(--accent-glow); } .f-icon-container:hover span { color: var(--text-main); } }
+
+        .hero-buttons { display: flex; gap: 1.5rem; flex-wrap: wrap; }
+
+        /* Profile Pic & Rotating Rings Styling */
+        .hero-image-container { flex: 1; display: flex; justify-content: center; align-items: center; position: relative; }
+        
+        /* The glowing rotating rings */
+        .rotating-ring { position: absolute; width: clamp(310px, 38vw, 430px); height: clamp(310px, 38vw, 430px); border-radius: 50%; border: 2px solid transparent; background: linear-gradient(var(--bg-dark), var(--bg-dark)) padding-box, linear-gradient(90deg, transparent, var(--accent-main), transparent) border-box; animation: rotateRing 15s linear infinite; z-index: 1; }
+        .rotating-ring.inner { width: clamp(340px, 42vw, 470px); height: clamp(340px, 42vw, 470px); animation-direction: reverse; animation-duration: 10s; opacity: 0.7; }
+        @keyframes rotateRing { to { transform: rotate(360deg); } }
+
+        /* The central dark profile container */
+        .profile-container { position: relative; width: clamp(280px, 35vw, 400px); height: clamp(280px, 35vw, 400px); border-radius: 50%; background: #0f172a; border: 2px solid rgba(56, 189, 248, 0.1); box-shadow: 20px 20px 60px rgba(56, 189, 248, 0.15), inset 0 0 20px rgba(0,0,0,0.5); display: flex; justify-content: center; align-items: center; z-index: 5; }
+        .profile-pic { width: 85%; height: 85%; object-fit: cover; border-radius: 50%; z-index: 6; }
+
+        /* --- UPGRADED INTERACTIVE BUTTONS --- */
+        .btn-primary, .btn-secondary, .btn-outline, .social-icon, .floating-email { position: relative; overflow: hidden; }
+        
+        .btn-primary { 
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 1rem 2rem; font-size: 0.95rem; font-weight: 700; 
+            color: var(--bg-dark); background: var(--accent-main); border: 2px solid var(--accent-main); border-radius: 50px; cursor: pointer; 
+            text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: var(--accent-glow); 
+        }
+        @media (hover: hover) { .btn-primary:hover { background: rgba(56, 189, 248, 0.1); color: var(--accent-main); transform: translateY(-4px); box-shadow: 0 10px 25px rgba(56, 189, 248, 0.3); } }
+        
+        .btn-secondary { 
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 1rem 2rem; font-size: 0.95rem; font-weight: 700; 
+            color: var(--text-main); background: rgba(255, 255, 255, 0.05); border: 2px solid var(--glass-border); border-radius: 50px; cursor: pointer; 
+            text-decoration: none; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(10px); 
+        }
+        @media (hover: hover) { .btn-secondary:hover { background: var(--accent-main); color: var(--bg-dark); border-color: var(--accent-main); transform: translateY(-4px); box-shadow: var(--accent-glow); } }
+        
+        .btn-outline { 
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 0.8rem 1.2rem; font-size: 0.85rem; font-weight: 700; 
+            color: var(--text-main); background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 30px; text-decoration: none; transition: all 0.3s ease; cursor: pointer; width: 100%;
+        }
+        @media (hover: hover) { .btn-outline:hover { background: var(--accent-main); color: var(--bg-dark); border-color: var(--accent-main); transform: translateY(-3px); box-shadow: var(--accent-glow);} }
+        
+        .btn-primary:active, .btn-secondary:active, .btn-outline:active, .social-icon:active, .floating-email:active, .close-modal:active { transform: scale(0.92) !important; box-shadow: 0 0 5px rgba(56, 189, 248, 0.8) !important; transition: 0.1s !important; }
+
+        span.ripple { position: absolute; border-radius: 50%; transform: scale(0); animation: ripple-anim 500ms linear; background-color: rgba(255, 255, 255, 0.4); pointer-events: none; }
+        @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+        /* Analytics */
+        .analytics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; margin: 2rem 0; }
+        .stat-card { text-align: center; padding: 2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; background: var(--bg-card); border-radius: 20px; border: 1px solid var(--glass-border);}
+        .stat-number { font-size: 3.5rem; font-weight: 800; color: var(--accent-main); line-height: 1; margin-bottom: 0.5rem; display: flex; align-items: center; text-shadow: var(--accent-glow); }
+        .stat-label { font-size: 0.9rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; font-weight: 500;}
+
+        /* Skills Grid */
+        .skills-category-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2.5rem; margin-top: 2rem; }
+        .skill-category h3 { color: var(--text-main); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 12px; font-size: 1.3rem; padding-bottom: 10px; border-bottom: 1px solid var(--glass-border);}
+        .skill-category h3 i { color: var(--accent-main); font-size: 1.6rem; text-shadow: var(--accent-glow); }
+        
+        .skill-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.8rem;}
+        .skill-list li { display: flex; align-items: center; gap: 15px; color: var(--text-muted); font-size: 1rem; padding: 0.8rem 1rem; background: rgba(255,255,255,0.02); border-radius: 12px; border: 1px solid transparent; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); cursor: default; }
+        .skill-list li i { color: rgba(255,255,255,0.3); font-size: 1.3rem; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); width: 25px; text-align: center;}
+        
+        @media (hover: hover) {
+            .skill-list li:hover { background: rgba(56, 189, 248, 0.05); border-color: rgba(56, 189, 248, 0.3); transform: translateX(10px); color: var(--text-main); box-shadow: 0 5px 15px rgba(0,0,0,0.2);}
+            .skill-list li:hover i { color: var(--accent-main); text-shadow: var(--accent-glow); transform: scale(1.4) rotate(10deg); }
+        }
+
+        /* Timeline */
+        .timeline-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 3rem; margin-top: 2rem;}
+        .timeline-column h3 { font-size: 1.5rem; color: var(--text-main); margin-bottom: 2rem; display: flex; align-items: center; gap: 10px; }
+        .timeline-column h3 i { color: var(--accent-main); }
+        .timeline-track { position: relative; padding-left: 2rem; border-left: 2px solid var(--glass-border); }
+        .timeline-progress { position: absolute; top: 0; left: -2px; width: 2px; height: 0%; background: var(--accent-main); box-shadow: var(--accent-glow); transition: height 0.2s ease-out; }
+        .timeline-item { position: relative; margin-bottom: 2.5rem; padding-bottom: 1rem;}
+        .timeline-dot { content: ''; position: absolute; left: -39px; top: 5px; width: 14px; height: 14px; background: var(--bg-dark); border: 2px solid var(--glass-border); border-radius: 50%; transition: all 0.3s ease; z-index: 2; }
+        .timeline-item.active .timeline-dot { background: var(--accent-main); border-color: var(--accent-main); box-shadow: var(--accent-glow); }
+        .timeline-item h4 { color: var(--text-main); font-size: 1.2rem; margin-bottom: 0.2rem; }
+        .timeline-item h5 { color: var(--accent-main); font-size: 0.9rem; margin-bottom: 1rem; font-weight: 500; }
+        .timeline-item p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;}
+
+        /* Services & Philosophy */
+        .services-grid, .phi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+        .service-icon, .phi-icon { width: 60px; height: 60px; background: rgba(56, 189, 248, 0.1); border-radius: 15px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--accent-main); margin-bottom: 1.5rem; border: 1px solid rgba(56, 189, 248, 0.2); transition: transform 0.4s ease; }
+        .glass-panel:hover .service-icon { transform: translateY(-5px) scale(1.1); background: var(--accent-main); color: var(--bg-dark); box-shadow: var(--accent-glow); }
+        .service-card h3, .phi-card h3 { font-size: 1.4rem; margin-bottom: 1rem; color: var(--text-main);}
+        .phi-card { padding: 2.5rem; background: var(--bg-card); border-radius: 20px; border: 1px solid var(--glass-border); border-left: 4px solid var(--accent-main); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        @media (hover: hover) {
+            .phi-card:hover { transform: translateY(-10px); border-color: var(--accent-main); box-shadow: 0 15px 30px rgba(0,0,0,0.5), inset 0 0 20px rgba(56, 189, 248, 0.1); }
+            .phi-card:hover .phi-icon { transform: scale(1.2) translateY(-5px); }
+        }
+
+        /* --- PROJECTS GRID --- */
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 3rem; margin-bottom: 3rem;}
+        .project-card { background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 20px; display: flex; flex-direction: column; justify-content: space-between; transition: transform 0.4s ease, border-color 0.4s ease; overflow: hidden; cursor: pointer; }
+        @media (hover: hover) { .project-card:hover { transform: translateY(-10px); border-color: var(--accent-main); box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(56, 189, 248, 0.1); } }
+        .project-card:active { transform: scale(0.98); transition: transform 0.1s; } 
+        
+        .project-image-container { position: relative; width: 100%; height: 240px; overflow: hidden; border-radius: 20px 20px 0 0; }
+        .project-image { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        @media (hover: hover) { .project-card:hover .project-image { transform: scale(1.08); } }
+        .project-image-container::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, var(--bg-dark) 0%, transparent 100%); z-index: 1; pointer-events: none;}
+        
+        .project-content { padding: 0 2rem 2rem 2rem; position: relative; z-index: 2; display: flex; flex-direction: column; flex-grow: 1; margin-top: -30px; }
+        .project-content h3 { font-size: 1.5rem; margin-bottom: 0.8rem; color: var(--text-main); }
+        .project-content p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6; flex-grow: 1; margin-bottom: 1.5rem; }
+        .badge { position: absolute; top: 1.5rem; right: 1.5rem; background: rgba(15, 23, 42, 0.8); backdrop-filter: blur(5px); border: 1px solid var(--accent-main); color: var(--accent-main); padding: 0.4rem 1rem; border-radius: 30px; font-size: 0.75rem; font-weight: 600; z-index: 2; text-transform: uppercase; }
+        .project-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+        .ptag { font-size: 0.75rem; padding: 0.3rem 0.8rem; border-radius: 6px; background: rgba(255,255,255,0.05); color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
+        
+        /* Dual Buttons for Projects */
+        .project-actions { display: flex; gap: 10px; margin-top: auto; position: relative; z-index: 10; }
+
+        /* Bouncy Modal */
+        .modal { position: fixed; inset: 0; background: rgba(2, 6, 23, 0.95); backdrop-filter: blur(20px); z-index: 5000; display: none; padding: 5%; overflow-y: auto; }
+        .modal-content { max-width: 1000px; margin: 0 auto; background: var(--bg-card); border: 1px solid var(--glass-border); border-radius: 24px; padding: 3rem; position: relative; animation: modalPop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        @keyframes modalPop { 0% { transform: scale(0.9) translateY(40px); opacity: 0; } 100% { transform: scale(1) translateY(0); opacity: 1; } }
+        
+        .close-modal { position: absolute; top: 20px; right: 20px; width: 45px; height: 45px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); display: flex; align-items: center; justify-content: center; font-size: 1.5rem; color: var(--text-main); cursor: pointer; transition: 0.3s; z-index: 100; }
+        @media (hover: hover) { .close-modal:hover { background: var(--accent-main); color: var(--bg-dark); transform: rotate(90deg); border-color: var(--accent-main); box-shadow: var(--accent-glow); } }
+
+        .modal-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 1rem; }
+        .modal-img { width: 100%; border-radius: 16px; border: 1px solid var(--glass-border); box-shadow: 0 10px 30px rgba(0,0,0,0.5); object-fit: cover; max-height: 400px;}
+        .modal-info h2 { font-size: 2.5rem; color: var(--text-main); margin-bottom: 1rem; line-height: 1.2; padding-right: 40px;}
+        .info-tag { display: inline-block; padding: 0.5rem 1rem; background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; font-size: 0.8rem; color: var(--accent-main); margin-right: 0.5rem; margin-bottom: 1.5rem; font-weight: 600;}
+
+        /* Contact & Map */
+        .contact-container { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; max-width: 1200px; margin: 0 auto; }
+        .contact-details { list-style: none; padding:0;}
+        .contact-details li { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.2rem; color: var(--text-main); font-size: 1.05rem; padding: 1rem; background: rgba(255,255,255,0.03); border-radius: 12px; border: 1px solid var(--glass-border); transition: 0.3s;}
+        .contact-details li:hover { border-color: var(--accent-main); background: rgba(56, 189, 248, 0.05); transform: translateX(5px); }
+        .contact-details i { color: var(--accent-main); font-size: 1.5rem; width: 30px; text-align: center; }
+        
+        .map-container { margin-top: 2rem; border-radius: 16px; overflow: hidden; border: 1px solid var(--glass-border); height: 250px; box-shadow: var(--glass-shadow);}
+        .map-container iframe { width: 100%; height: 100%; border: none; filter: invert(90%) hue-rotate(180deg) contrast(90%); } 
+
+        .form-control { width: 100%; padding: 1.2rem 1.5rem; margin-bottom: 1.5rem; background: rgba(0, 0, 0, 0.2); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-main); font-size: 1rem; transition: all 0.3s ease; font-family: inherit; box-sizing: border-box; }
+        .form-control:focus { outline: none; border-color: var(--accent-main); box-shadow: inset 0 0 10px rgba(56, 189, 248, 0.1); background: rgba(0,0,0,0.4); }
+        textarea.form-control { resize: vertical; min-height: 150px; }
+        .success-message { display: none; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; animation: fadeIn 0.5s ease forwards; }
+        .success-message i { font-size: 4rem; color: var(--accent-main); margin-bottom: 1rem; text-shadow: var(--accent-glow); }
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .floating-email { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--bg-card); backdrop-filter: blur(10px); border: 1px solid var(--accent-main); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-main); font-size: 1.5rem; z-index: 999; box-shadow: var(--glass-shadow); transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        @media (hover: hover) { .floating-email:hover { background: var(--accent-main); color: var(--bg-dark); transform: translateY(-5px); box-shadow: var(--accent-glow); } }
+
+        /* Footer */
+        footer { background: rgba(2, 6, 23, 0.9); border-top: 1px solid var(--glass-border); padding: 5rem 10% 2rem; margin-top: 4rem;}
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 3rem; margin-bottom: 3rem; }
+        .footer-col h3 { color: var(--text-main); margin-bottom: 1.5rem; font-size: 1.3rem; }
+        .footer-col p { color: var(--text-muted); font-size: 0.95rem; line-height: 1.6;}
+        .footer-links { list-style: none; padding: 0; }
+        .footer-links li { margin-bottom: 0.8rem; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; transition: 0.3s; }
+        .footer-links a:hover { color: var(--accent-main); padding-left: 5px; }
+        
+        .social-links { display: flex; gap: 1rem; }
+        .social-icon { width: 45px; height: 45px; border-radius: 50%; background: var(--bg-card); border: 1px solid var(--glass-border); display: inline-flex; align-items: center; justify-content: center; color: var(--text-main); font-size: 1.2rem; text-decoration: none; transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+        @media (hover: hover) { .social-icon:hover { border-color: var(--accent-main); color: var(--accent-main); transform: translateY(-5px); box-shadow: var(--accent-glow); } }
+        .footer-bottom { text-align: center; padding-top: 2rem; border-top: 1px solid var(--glass-border); color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1); will-change: opacity, transform; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        /* =========================================
+           MOBILE & TABLET OPTIMIZATIONS
+           ========================================= */
+        @media (max-width: 1024px) { 
+            section { padding: clamp(4rem, 6vh, 5rem) 5%; } 
+            
+            /* Enhanced Tablet Hero View */
+            .hero { flex-direction: column-reverse; text-align: center; gap: 3.5rem; padding-top: 130px; } 
+            .hero-content { text-align: center; display: flex; flex-direction: column; align-items: center; }
+            .hero p { text-align: center; }
+            .featured-work { justify-content: center; flex-direction: column; gap: 1rem;}
+            .hero-buttons { justify-content: center; }
+            
+            .modal-grid { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .menu-toggle { display: block; }
+            
+            nav { position: fixed; top: 0; right: -100%; width: 100%; height: 100vh; background: rgba(2, 6, 23, 0.98); backdrop-filter: blur(20px); display: flex; align-items: center; justify-content: center; transition: right 0.4s ease-in-out; z-index: 1000; }
+            nav.active { right: 0; }
+            nav ul { flex-direction: column; text-align: center; gap: 2.5rem; }
+            nav ul li { opacity: 0; transform: translateY(20px); transition: all 0.4s ease; }
+            nav.active ul li { opacity: 1; transform: translateY(0); }
+            nav.active ul li:nth-child(1) { transition-delay: 0.1s; }
+            nav.active ul li:nth-child(2) { transition-delay: 0.2s; }
+            nav.active ul li:nth-child(3) { transition-delay: 0.3s; }
+            nav.active ul li:nth-child(4) { transition-delay: 0.4s; }
+            nav.active ul li:nth-child(5) { transition-delay: 0.5s; }
+            nav a { font-size: 1.8rem; color: #fff;}
+            
+            /* Enhanced Mobile Hero View */
+            .hero { padding-top: 110px; gap: 2.5rem;}
+            .profile-container { width: 250px; height: 250px; }
+            
+            /* Mobile Rings */
+            .rotating-ring { width: 280px; height: 280px; }
+            .rotating-ring.inner { width: 310px; height: 310px; }
+
+            .typing-container { font-size: 1.6rem; min-height: 40px; justify-content: center; }
+            .featured-icons { flex-wrap: wrap; justify-content: center; gap: 1.2rem;}
+            .f-icon-container i { font-size: 1.5rem; }
+            
+            .project-actions { flex-direction: column; } 
+            
+            .analytics-grid { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .stat-number { font-size: 2.5rem; }
+            .contact-container { grid-template-columns: 1fr; gap: 2rem;}
+            
+            .projects-grid { display: flex; flex-wrap: nowrap; overflow-x: auto; gap: 1.5rem; padding-bottom: 2rem; scroll-snap-type: x mandatory; margin-left: -5%; margin-right: -5%; padding-left: 5%; padding-right: 5%; scrollbar-width: none;}
+            .projects-grid::-webkit-scrollbar { display: none; }
+            .project-card { min-width: 88vw; scroll-snap-align: center;}
+            
+            .floating-email { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 1.2rem; }
+            
+            .modal { padding: 0; }
+            .modal-content { margin: 0; width: 100%; min-height: 100vh; border-radius: 0; padding: 5rem 1.5rem 3rem 1.5rem; border: none; }
+            .close-modal { position: fixed; top: 15px; right: 15px; background: rgba(30, 41, 59, 0.8); } 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="scroll-progress"></div>
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <a href="#contact" class="floating-email interactive-btn" title="Hire Me">
+        <i class="fas fa-envelope"></i>
+    </a>
+
+    <header>
+        <a href="#home" class="logo">JYOTHI<span>.</span></a>
+        <div class="menu-toggle interactive-btn" id="hamburger"><i class="fas fa-bars"></i></div>
+        <nav id="nav-overlay">
+            <ul>
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#skills" class="nav-link">Skills</a></li>
+                <li><a href="#projects" class="nav-link">Work</a></li>
+                <li><a href="#about" class="nav-link">Journey</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <div class="hero-content reveal">
+            <h2>UI/UX DESIGNER</h2>
+            <h1>Durga Jyothi<br>Vadlamuri</h1>
+            
+            <div class="typing-container"><span class="typed-text"></span></div>
+            
+            <p>I am a detail-oriented UI/UX Designer who enjoys turning complex problems into simple, intuitive designs. My work focuses on user empathy, clean visual storytelling, and creating seamless experiences through thoughtful research and polished interfaces.</p>
+            
+            <div class="featured-work">
+                <span class="featured-label">Featured Work:</span>
+                <div class="featured-icons">
+                    <a href="#projects" class="f-icon-container" title="Pathify"><i class="fas fa-route"></i><span>Pathify</span></a>
+                    <a href="#projects" class="f-icon-container" title="CarePoint"><i class="fas fa-stethoscope"></i><span>CarePoint</span></a>
+                    <a href="#projects" class="f-icon-container" title="Yummify"><i class="fas fa-utensils"></i><span>Yummify</span></a>
+                    <a href="#projects" class="f-icon-container" title="Faith & Root"><i class="fas fa-seedling"></i><span>Faith & Root</span></a>
+                </div>
+            </div>
+
+            <div class="hero-buttons">
+                <a href="#contact" class="btn-primary interactive-btn">Hire Me <i class="fas fa-paper-plane"></i></a>
+                <a href="./images/Newprofessionalresume-1.pdf" target="_blank" class="btn-secondary interactive-btn"><i class="fas fa-arrow-down"></i> Download Resume</a>
+            </div>
+        </div>
+        
+        <div class="hero-image-container reveal" style="transition-delay: 0.2s;">
+            <div class="rotating-ring inner"></div>
+            <div class="rotating-ring"></div>
+            <div class="profile-container">
+                <img src="./images/80212-removebg-preview.png" alt="Durga Jyothi Vadlamuri" class="profile-pic">
+            </div>
+        </div>
+    </section>
+
+    <section id="analytics">
+        <div class="analytics-grid">
+            <div class="stat-card reveal"><div class="stat-number"><span class="counter" data-target="120">0</span>+</div><div class="stat-label">UI Screens</div></div>
+            <div class="stat-card reveal" style="transition-delay: 0.1s;"><div class="stat-number"><span class="counter" data-target="8">0</span></div><div class="stat-label">Projects Completed</div></div>
+            <div class="stat-card reveal" style="transition-delay: 0.2s;"><div class="stat-number"><span class="counter" data-target="400">0</span>+</div><div class="stat-label">Design Hours</div></div>
+            <div class="stat-card reveal" style="transition-delay: 0.3s;"><div class="stat-number"><span class="counter" data-target="100">0</span>%</div><div class="stat-label">User Centered</div></div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2 class="section-title reveal">Technical <span>Arsenal</span></h2>
+        <p class="section-subtitle reveal">A comprehensive breakdown of my design capabilities, software proficiency, and development skills.</p>
+        
+        <div class="skills-category-grid">
+            <div class="glass-panel skill-category reveal">
+                <h3><i class="fas fa-search"></i> UX Research</h3>
+                <ul class="skill-list">
+                    <li><i class="fas fa-users"></i> User Research</li>
+                    <li><i class="fas fa-pencil-ruler"></i> Wireframing</li>
+                    <li><i class="fas fa-layer-group"></i> Prototyping</li>
+                    <li><i class="fas fa-brain"></i> Design Principles</li>
+                    <li><i class="fas fa-sitemap"></i> Empathy Mapping</li>
+                    <li><i class="fas fa-user-check"></i> Usability Testing</li>
+                </ul>
+            </div>
+
+            <div class="glass-panel skill-category reveal" style="transition-delay: 0.1s;">
+                <h3><i class="fas fa-paint-brush"></i> UI & Tools</h3>
+                <ul class="skill-list">
+                    <li><i class="fab fa-figma"></i> Figma & Figjam</li>
+                    <li><i class="fas fa-desktop"></i> Framer</li>
+                    <li><i class="fas fa-vector-square"></i> Motiff</li>
+                    <li><i class="fas fa-project-diagram"></i> Miro</li>
+                    <li><i class="fas fa-eye"></i> Visual Design</li>
+                    <li><i class="fas fa-hand-pointer"></i> Interaction Design</li>
+                </ul>
+            </div>
+
+            <div class="glass-panel skill-category reveal" style="transition-delay: 0.2s;">
+                <h3><i class="fas fa-code"></i> Frontend & Tech</h3>
+                <ul class="skill-list">
+                    <li><i class="fab fa-html5"></i> HTML5 & CSS3</li>
+                    <li><i class="fab fa-js"></i> JavaScript</li>
+                    <li><i class="fab fa-react"></i> React JS</li>
+                    <li><i class="fab fa-bootstrap"></i> Bootstrap</li>
+                    <li><i class="fab fa-python"></i> Python</li>
+                    <li><i class="fas fa-robot"></i> AI & ML Basics</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="services">
+        <h2 class="section-title reveal">Design <span>Philosophy</span></h2>
+        <p class="section-subtitle reveal">How I transform complex problems into intuitive solutions.</p>
+        
+        <div class="phi-grid">
+            <div class="glass-panel phi-card reveal">
+                <div class="phi-icon"><i class="fas fa-heart"></i></div>
+                <h3>Empathy First</h3>
+                <p style="color: var(--text-muted);">Data tells us what, but empathy tells us why. I design for the human on the other side of the screen, focusing on real-world needs.</p>
+            </div>
+            <div class="glass-panel phi-card reveal" style="transition-delay: 0.1s;">
+                <div class="phi-icon"><i class="fas fa-magic"></i></div>
+                <h3>Clean Storytelling</h3>
+                <p style="color: var(--text-muted);">I believe in turning complex problems into simple, intuitive designs through thoughtful research and polished visual interfaces.</p>
+            </div>
+            <div class="glass-panel phi-card reveal" style="transition-delay: 0.2s;">
+                <div class="phi-icon"><i class="fas fa-laptop-code"></i></div>
+                <h3>Practical Execution</h3>
+                <p style="color: var(--text-muted);">Bringing front-end development knowledge ensures my designs aren't just pretty, but they are scalable, practical, and buildable.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2 class="section-title reveal">UI/UX <span>Projects</span></h2>
+        <p class="section-subtitle reveal">Real-world interface designs, case studies, and application overhauls.</p>
+        
+        <div class="projects-grid">
+            
+            <div class="project-card reveal" onclick="openModal('pathify')">
+                <div class="project-image-container">
+                    <img src="./images/Screenshot 2025-11-13 162323.png" onerror="this.src='https://images.unsplash.com/photo-1551288049-bbbda536ad89?q=80&w=1000&auto=format&fit=crop'" class="project-image" alt="Pathify App">
+                    <span class="badge">Case Study</span>
+                </div>
+                <div class="project-content">
+                    <h3>Pathify – Student App</h3>
+                    <div class="project-tags"><span class="ptag">UI/UX</span><span class="ptag">Figma</span></div>
+                    <p>A student-focused assistance app designed to simplify tracking progress, managing tasks, and accessing resources.</p>
+                    <div class="project-actions">
+                        <a href="https://www.figma.com/design/VVqHPbsMWty8L76ySaVrLe/Untitled?node-id=3-2609&t=WSkjciOkFsrwiYsr-1" target="_blank" class="btn-primary interactive-btn" onclick="event.stopPropagation();"><i class="fab fa-figma"></i> View Figma</a>
+                        <button class="btn-outline interactive-btn" onclick="event.stopPropagation(); openModal('pathify');">Details <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal" style="transition-delay: 0.1s;" onclick="openModal('carepoint')">
+                <div class="project-image-container">
+                    <img src="./images/Screenshot 2025-11-24 195227.png" onerror="this.src='https://images.unsplash.com/photo-1510017803434-a899398421b3?q=80&w=1000&auto=format&fit=crop'" class="project-image" alt="CarePoint App">
+                    <span class="badge">Mobile App</span>
+                </div>
+                <div class="project-content">
+                    <h3>CarePoint – Doctor App</h3>
+                    <div class="project-tags"><span class="ptag">Healthcare</span><span class="ptag">App Design</span></div>
+                    <p>A doctor appointment booking app to easily find nearby hospitals, explore doctors, and book confirmed appointments.</p>
+                    <div class="project-actions">
+                        <a href="https://www.figma.com/design/VVqHPbsMWty8L76ySaVrLe/Untitled?node-id=751-4627&t=WSkjciOkFsrwiYsr-1" target="_blank" class="btn-primary interactive-btn" onclick="event.stopPropagation();"><i class="fab fa-figma"></i> View Figma</a>
+                        <button class="btn-outline interactive-btn" onclick="event.stopPropagation(); openModal('carepoint');">Details <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="project-card reveal" style="transition-delay: 0.2s;" onclick="openModal('yummify')">
+                <div class="project-image-container">
+                    <img src="images/Desktop - 1.png" onerror="this.src='https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=1000&auto=format&fit=crop'" class="project-image" alt="Yummify">
+                    <span class="badge">Landing Page</span>
+                </div>
+                <div class="project-content">
+                    <h3>Yummify Food Delivery</h3>
+                    <div class="project-tags"><span class="ptag">Web UI</span><span class="ptag">Landing Page</span></div>
+                    <p>A highly user-friendly landing page designed for an emerging restaurant food delivery service focusing on craving conversion.</p>
+                    <div class="project-actions">
+                        <a href="https://www.figma.com/design/VVqHPbsMWty8L76ySaVrLe/Untitled?node-id=1037-4664&t=WSkjciOkFsrwiYsr-1" target="_blank" class="btn-primary interactive-btn" onclick="event.stopPropagation();"><i class="fab fa-figma"></i> View Figma</a>
+                        <button class="btn-outline interactive-btn" onclick="event.stopPropagation(); openModal('yummify');">Details <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card reveal" style="transition-delay: 0.3s;" onclick="openModal('faithroot')">
+                <div class="project-image-container">
+                    <img src="./images/Screenshot 2025-11-29 195129.png" onerror="this.src='https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=1000&auto=format&fit=crop'" class="project-image" alt="Faith & Root">
+                    <span class="badge">Redesign</span>
+                </div>
+                <div class="project-content">
+                    <h3>Faith & Root Website</h3>
+                    <div class="project-tags"><span class="ptag">Web Redesign</span><span class="ptag">E-commerce</span></div>
+                    <p>Redesigned the website to improve visual appeal, user flow, and brand consistency reflecting their organic identity.</p>
+                    <div class="project-actions">
+                        <a href="https://www.figma.com/design/VVqHPbsMWty8L76ySaVrLe/Untitled?node-id=855-2&t=Ay7lP2dNfJrHNEi2-1" target="_blank" class="btn-primary interactive-btn" onclick="event.stopPropagation();"><i class="fab fa-figma"></i> View Figma</a>
+                        <button class="btn-outline interactive-btn" onclick="event.stopPropagation(); openModal('faithroot');">Details <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="about">
+        <h2 class="section-title reveal">My <span>Journey</span></h2>
+        <p class="section-subtitle reveal">The timeline of my education and professional certifications.</p>
+        
+        <div class="timeline-container">
+            <div class="timeline-column reveal">
+                <h3><i class="fas fa-award"></i> Certifications & Training</h3>
+                <div class="timeline-track" id="exp-track">
+                    <div class="timeline-progress" id="exp-progress"></div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4>UI/UX Design Masterclass</h4>
+                        <h5>August 2025 - Present</h5>
+                        <p>Intensive hands-on training covering end-to-end design processes including user research, wireframing, prototyping, and high-fidelity mockups.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4>Frontend Development (React)</h4>
+                        <h5>August 2025 - Present</h5>
+                        <p>Deepening knowledge of bridging design and development through functional component building, state management, and responsive web design using ReactJS.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4>Python Foundation Course</h4>
+                        <h5>Completed</h5>
+                        <p>Built a solid foundation in programming logic, algorithms, and data structures using Python.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timeline-column reveal" style="transition-delay: 0.2s;">
+                <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                <div class="timeline-track" id="edu-track">
+                    <div class="timeline-progress" id="edu-progress"></div>
+                    
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4>B.Tech: CSE (AI & ML)</h4>
+                        <h5>SSIT (JNTUH Affiliated) | 2021 - 2025</h5>
+                        <p>Gained a robust understanding of software engineering, artificial intelligence, and machine learning models while heavily focusing on user-centered development.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4>MPC (Intermediate)</h4>
+                        <h5>Narayana Junior College | 2019 - 2021</h5>
+                        <p>Studied Mathematics, Physics, and Chemistry, laying a strong analytical foundation.</p>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <h4>10th Class (SSC)</h4>
+                        <h5>Triveni Talent School | 2018 - 2019</h5>
+                        <p>Early academic excellence focusing on core logical and linguistic abilities.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2 class="section-title reveal">Let's Work <span>Together</span></h2>
+        <p class="section-subtitle reveal">Currently available for freelance projects and full-time roles.</p>
+        
+        <div class="contact-container reveal">
+            <div>
+                <h3 style="font-size: 2rem; margin-bottom: 1rem; color: var(--text-main);">Reach Out</h3>
+                <p style="color: var(--text-muted); margin-bottom: 2rem;">If you are looking to build intuitive digital experiences or scale your design systems, let's talk.</p>
+                <ul class="contact-details">
+                    <li><i class="fab fa-whatsapp"></i> <a href="https://wa.me/8897727044" target="_blank" style="color: var(--text-main); text-decoration: none;">+91 8897727044</a></li>
+                    <li><i class="fas fa-phone-alt"></i> <a href="tel:+918897727044 "style="color: var(--text-main); text-decoration: none;">+91 8897727044</a></li>
+                    <li><i class="fas fa-envelope"></i> <a href="mailto:jyothi6645vadlamuri@gmail.com" style="color: var(--text-main); text-decoration: none;">jyothi6645vadlamuri@gmail.com</a></li>
+                    <li><i class="fas fa-map-marker-alt"></i>Hitech-City, Hyderabad</li>
+                </ul>
+
+                <div class="map-container">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3806.3263595562095!2d78.3751761!3d17.4440813!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcb93dc8c5d69df%3A0x19688beb557fa0ee!2sHITEC%20City%2C%20Hyderabad%2C%20Telangana!5e0!3m2!1sen!2sin!4v1700000000000!5m2!1sen!2sin" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+
+            <div class="glass-panel" style="height: fit-content;">
+                <form id="hireForm">
+                    <input type="text" class="form-control" placeholder="Your Name" required>
+                    <input type="email" class="form-control" placeholder="Your Email" required>
+                    <input type="text" class="form-control" placeholder="Subject" required>
+                    <textarea class="form-control" placeholder="Tell me about your project..." required></textarea>
+                    <button type="submit" class="btn-primary interactive-btn" style="width: 100%; justify-content: center;">
+                        Send Message <i class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+
+                <div id="successState" class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <h3 style="color: var(--text-main); font-size: 1.5rem; margin-bottom: 0.5rem;">Message Sent!</h3>
+                    <p style="color: var(--text-muted);">Thank you for reaching out. I'll get back to you as soon as possible.</p>
+                    <button onclick="resetForm()" class="btn-outline interactive-btn" style="margin-top: 1.5rem;">Send another</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col reveal" style="text-align: left;">
+                <a href="#home" class="logo" style="margin-bottom: 1rem; display: block;">JYOTHI<span>.</span></a>
+                <p>Bridging the gap between engineering logic and human-centered design to create digital products that look beautiful and work perfectly.</p>
+            </div>
+            
+            <div class="footer-col reveal" style="transition-delay: 0.1s; text-align: left;">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#about">My Journey</a></li>
+                    <li><a href="#projects">Portfolio</a></li>
+                    <li><a href="#contact">Contact Me</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col reveal" style="transition-delay: 0.2s; text-align: left;">
+                <h3>Connect</h3>
+                <div class="social-links">
+                    <a href="https://www.linkedin.com/in/durga-jyothi-vadlamuri-b335a3303/" class="social-icon interactive-btn" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://durgajyothivadlamuri.framer.website/" class="social-icon interactive-btn" target="_blank" title="Framer Portfolio"><i class="fas fa-globe"></i></a>
+                    <a href="mailto:jyothi6645vadlamuri@gmail.com" class="social-icon interactive-btn"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom reveal">
+            <p>© 2025 Durga Jyothi Vadlamuri. Designed with empathy and logic. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <div id="projectModal" class="modal">
+        <div class="modal-content" id="modalBody">
+            </div>
+    </div>
+
+    <script>
+        // --- 1. Cursor & Nav ---
+        const dot = document.querySelector('.cursor-dot');
+        const outline = document.querySelector('.cursor-outline');
+        window.addEventListener('mousemove', (e) => {
+            if(window.innerWidth > 1024) {
+                dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+                outline.animate({ transform: `translate(${e.clientX}px, ${e.clientY}px)` }, { duration: 500, fill: "forwards" });
+            }
+        });
+
+        const burger = document.getElementById('hamburger');
+        const nav = document.getElementById('nav-overlay');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        burger.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            burger.innerHTML = nav.classList.contains('active') ? '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                burger.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+
+        // --- 2. Solid Cyan Typing Effect ---
+        const textArray = ["Problem Solver", "UI/UX Designer", "Creative Thinker", "Front-end Developer"];
+        let idx = 0, charIdx = 0, deleting = false;
+        const typedSpan = document.querySelector('.typed-text');
+
+        function typeEffect() {
+            if(!typedSpan) return; // safety check
+            
+            const currentText = textArray[idx];
+            typedSpan.textContent = deleting ? currentText.substring(0, charIdx--) : currentText.substring(0, charIdx++);
+            
+            if(!deleting && charIdx === currentText.length + 1) { 
+                deleting = true; 
+                setTimeout(typeEffect, 2500); // pause at the end of word
+            } else if(deleting && charIdx === 0) { 
+                deleting = false; 
+                idx = (idx + 1) % textArray.length; 
+                setTimeout(typeEffect, 500); // pause before starting next word
+            } else { 
+                setTimeout(typeEffect, deleting ? 40 : 100); // typing speed
+            }
+        }
+        typeEffect();
+
+        // --- 3. Dynamic Scroll Timeline Animation ---
+        function updateTimelines() {
+            const tracks = [
+                { track: document.getElementById('exp-track'), prog: document.getElementById('exp-progress') },
+                { track: document.getElementById('edu-track'), prog: document.getElementById('edu-progress') }
+            ];
+
+            tracks.forEach(t => {
+                if(!t.track) return;
+                const rect = t.track.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                
+                let percentage = 0;
+                if (rect.top < windowHeight * 0.8) {
+                    percentage = ((windowHeight * 0.8 - rect.top) / rect.height) * 100;
+                    percentage = Math.min(Math.max(percentage, 0), 100);
+                }
+                t.prog.style.height = percentage + '%';
+
+                const items = t.track.querySelectorAll('.timeline-item');
+                items.forEach(item => {
+                    const itemRect = item.getBoundingClientRect();
+                    if(itemRect.top < windowHeight * 0.8) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const scrolled = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+            document.getElementById('scroll-progress').style.width = scrolled + '%';
+            updateTimelines();
+        });
+        updateTimelines();
+
+        // --- 4. Touch/Click Ripple Effect ---
+        document.querySelectorAll('.interactive-btn').forEach(btn => {
+            btn.addEventListener('pointerdown', function(e) {
+                const circle = document.createElement("span");
+                const d = Math.max(this.clientWidth, this.clientHeight);
+                const rect = this.getBoundingClientRect();
+                circle.style.width = circle.style.height = `${d}px`;
+                circle.style.left = `${(e.touches ? e.touches[0].clientX : e.clientX) - rect.left - d/2}px`;
+                circle.style.top = `${(e.touches ? e.touches[0].clientY : e.clientY) - rect.top - d/2}px`;
+                circle.classList.add("ripple");
+                if (this.querySelector('.ripple')) this.querySelector('.ripple').remove();
+                this.appendChild(circle);
+            });
+        });
+
+        // --- 5. Modal Logic (Includes All Projects) ---
+        const projectData = {
+            pathify: {
+                name: "Pathify – Student Growth & Productivity App", date: "Oct 2025 - Nov 2025", role: "UI/UX Designer",
+                details: "Pathify is a student-focused assistance app designed to simplify tracking progress, managing tasks, and accessing resources. The goal is to create a simple, intuitive, and supportive experience for students.",
+                whatIDid: ["Problem discovery & Analysis", "User research & Persona creation", "Wireframing & User flow mapping", "High-fidelity UI screens & Prototypes"],
+                img: "images/Screenshot 2025-11-13 162323.png", fallbackImg: "images/Screenshot 2025-11-13 162323.png"
+            },
+            carepoint: {
+                name: "CarePoint – Doctor Appointment App", date: "Oct 2025 - Nov 2025", role: "UI/UX Designer",
+                details: "CarePoint is a doctor appointment booking app where users can easily find nearby hospitals, explore trusted doctors, and book confirmed in-clinic appointments.",
+                whatIDid: ["End-to-end UX/UI design", "User Personas creation", "Responsive Wireframing", "Interactive High-Fidelity Prototyping"],
+                img: "images/Screenshot 2025-11-24 195227.png", fallbackImg: "images/Screenshot 2025-11-24 195227.png"
+            },
+            yummify: {
+                name: "Yummify - Food Delivery Landing Page", date: "Jul 2024 - Aug 2024", role: "UI Designer",
+                details: "A highly intuitive and user-friendly landing page dedicated to restaurant food delivery. Focused on reducing the friction in the ordering process and appealing visual presentation.",
+                whatIDid: ["Landing Page Structure Strategy", "Visual & Layout Hierarchy", "Component library styling", "Accessibility checks"],
+                img: "images/Desktop - 1.jpg", fallbackImg: "images/Desktop - 1.jpg"
+            },
+            faithroot: {
+                name: "Faith & Root Website Redesign", date: "Nov 2025", role: "Lead UI Designer",
+                details: "I redesigned the Faith & Root website to improve visual appeal, user flow, and brand consistency. The goal was to create a more modern, clean, and nature-inspired interface that reflects the brand's organic and spiritual identity.",
+                whatIDid: ["Heuristic Evaluation of old site", "Improved typography & spacing", "Enhanced product presentation imagery", "Homepage layout optimization"],
+                img: "images/Screenshot 2025-11-29 195129.jpg", fallbackImg: "images/Screenshot 2025-11-29 195129.jpg"
+            }
+        };
+
+        function openModal(key) {
+            const data = projectData[key];
+            if(!data) return;
+            document.getElementById('modalBody').innerHTML = `
+                <div class="close-modal interactive-btn" onclick="closeModal()">×</div>
+                <div class="modal-grid">
+                    <div><img src="${data.img}" onerror="this.src='${data.fallbackImg}'" class="modal-img"></div>
+                    <div class="modal-info">
+                        <h2>${data.name}</h2>
+                        <div class="info-tag"><i class="far fa-calendar-alt"></i> ${data.date}</div>
+                        <div class="info-tag"><i class="fas fa-user-tag"></i> Role: ${data.role}</div>
+                        <p style="margin: 1.5rem 0; line-height: 1.8; color: var(--text-muted); font-size: 1.1rem;">${data.details}</p>
+                        <h4 style="color: var(--text-main); margin-bottom: 1rem; font-size: 1.2rem;">Key Contributions:</h4>
+                        <ul style="color: var(--text-muted); line-height: 2; list-style:none; padding:0;">
+                            ${data.whatIDid.map(item => `<li><i class="fas fa-check-circle" style="margin-right:10px; color:var(--accent-main);"></i>${item}</li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+            document.getElementById('projectModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('projectModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        window.onclick = (e) => { if (e.target == document.getElementById('projectModal')) closeModal(); }
+
+        // --- 6. Scroll Reveals & Counters ---
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if(e.isIntersecting) {
+                    e.target.classList.add('active');
+                    if(e.target.classList.contains('stat-card')) {
+                        const count = e.target.querySelector('.counter');
+                        let current = 0, target = +count.getAttribute('data-target');
+                        let timer = setInterval(() => {
+                            current += Math.ceil(target / 50);
+                            if(current >= target) { clearInterval(timer); current = target; }
+                            count.innerText = current;
+                        }, 30);
+                    }
+                }
+            });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // --- 7. Form Submission ---
+        const form = document.getElementById('hireForm');
+        const successState = document.getElementById('successState');
+        form.addEventListener('submit', (e) => {
+            e.preventDefault(); 
+            const btn = form.querySelector('button[type="submit"]');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            setTimeout(() => {
+                form.style.display = 'none';
+                successState.style.display = 'flex';
+                btn.innerHTML = originalText;
+                form.reset();
+            }, 1200); 
+        });
+        function resetForm() { successState.style.display = 'none'; form.style.display = 'block'; }
+    </script>
+</body>
+</html>
