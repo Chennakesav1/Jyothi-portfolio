@@ -176,14 +176,9 @@
             font-size: 1.5rem;
             z-index: 1001;
             cursor: pointer;
-            transition: transform 0.2s ease;
-            position: relative;
-            overflow: hidden;
-            padding: 5px;
         }
 
         .menu-toggle:active {
-            
             color: var(--accent-main);
         }
 
@@ -259,7 +254,7 @@
             display: flex;
             align-items: center;
             white-space: nowrap;
-            /* NEW: Hardware acceleration & paint containment to stop lag */
+            /* Hardware acceleration & paint containment to stop lag */
             contain: layout paint;
             transform: translateZ(0);
             will-change: contents;
@@ -333,13 +328,15 @@
             font-weight: 500;
         }
 
-        /* UPDATE THIS BLOCK */
         @media (hover: hover) {
-            .floating-email:hover {
-                background: var(--accent-main);
-                color: var(--bg-dark);
-                box-shadow: var(--accent-glow);
-                /* Deleted the transform: translateY(-5px); line */
+            .f-icon-container:hover {
+                transform: translateY(-5px);
+                color: var(--text-main);
+                text-shadow: var(--accent-glow);
+            }
+
+            .f-icon-container:hover span {
+                color: var(--text-main);
             }
         }
 
@@ -411,8 +408,7 @@
         .btn-primary,
         .btn-secondary,
         .btn-outline,
-        .social-icon,
-        .floating-email {
+        .social-icon {
             position: relative;
             overflow: hidden;
         }
@@ -500,6 +496,7 @@
             }
         }
 
+        /* Performance Fix: Removed floating-email and menu-toggle from scaling active states */
         .btn-primary:active,
         .btn-secondary:active,
         .btn-outline:active,
@@ -1127,6 +1124,7 @@
             }
         }
 
+        /* Floating Email - Animations removed for stability */
         .floating-email {
             position: fixed;
             bottom: 30px;
@@ -1144,14 +1142,13 @@
             font-size: 1.5rem;
             z-index: 999;
             box-shadow: var(--glass-shadow);
-            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
         }
 
         @media (hover: hover) {
             .floating-email:hover {
                 background: var(--accent-main);
                 color: var(--bg-dark);
-                transform: translateY(-5px);
                 box-shadow: var(--accent-glow);
             }
         }
@@ -1373,10 +1370,10 @@
             .typing-container { 
                 font-size: 1.6rem; 
                 height: 40px; 
-                width: 280px; /* Fixed width stops the flexbox calculation lag */
+                width: 280px; 
                 max-width: 100%;
                 margin: 0 auto 1.5rem auto; 
-                justify-content: center; /* Types left-to-right instead of pushing left */
+                justify-content: center; 
             }
             
             /* Mobile Swipe Indicator styling and animation */
@@ -1490,7 +1487,7 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <a href="#contact" class="floating-email" title="Hire Me"></a>
+    <a href="#contact" class="floating-email" title="Hire Me">
         <i class="fas fa-envelope"></i>
     </a>
 
