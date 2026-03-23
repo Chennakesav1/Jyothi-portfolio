@@ -24,7 +24,6 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --section-gap: clamp(4rem, 8vh, 6rem);
-            /* Controls spacing between sections dynamically */
         }
 
         /* Ambient Background */
@@ -52,6 +51,13 @@
             pointer-events: none;
             z-index: -1;
             background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_Noise_Texture.png");
+        }
+
+        /* Hardware Acceleration to fix mobile scroll jitter */
+        header, .floating-email {
+            will-change: transform, backdrop-filter;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
         }
 
         #scroll-progress {
@@ -171,6 +177,9 @@
             z-index: 1001;
             cursor: pointer;
             transition: transform 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            padding: 5px;
         }
 
         .menu-toggle:active {
@@ -239,7 +248,7 @@
             letter-spacing: -1px;
         }
 
-        /* Updated Typing Effect Styling - FIXED FOR SHAKING */
+        /* Updated Typing Effect Styling */
         .typing-container {
             font-size: clamp(1.8rem, 3vw, 2.5rem);
             color: var(--accent-main);
@@ -247,11 +256,9 @@
             margin-bottom: 1.5rem;
             text-shadow: var(--accent-glow);
             height: 60px;
-            /* Fixed height prevents vertical jumping */
             display: flex;
             align-items: center;
             white-space: nowrap;
-            /* Prevents wrapping to a second line */
         }
 
         .typed-text {
@@ -262,12 +269,10 @@
         }
 
         @keyframes blinkCursor {
-
             50%,
             100% {
                 border-color: transparent;
             }
-
             0% {
                 border-color: var(--accent-main);
             }
@@ -497,7 +502,6 @@
         .btn-secondary:active,
         .btn-outline:active,
         .social-icon:active,
-        .floating-email:active,
         .close-modal:active {
             transform: scale(0.92) !important;
             box-shadow: 0 0 5px rgba(56, 189, 248, 0.8) !important;
@@ -773,6 +777,11 @@
             .phi-card:hover .phi-icon {
                 transform: scale(1.2) translateY(-5px);
             }
+        }
+
+        /* --- SWIPE INDICATOR DEFAULT (HIDDEN ON DESKTOP) --- */
+        .swipe-indicator { 
+            display: none; 
         }
 
         /* --- PROJECTS GRID --- */
@@ -1211,8 +1220,6 @@
             text-decoration: none;
             transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* Add to your main CSS area */
-        .swipe-indicator { display: none; }
 
         @media (hover: hover) {
             .social-icon:hover {
@@ -1327,25 +1334,11 @@
                 transform: translateY(0);
             }
 
-            nav.active ul li:nth-child(1) {
-                transition-delay: 0.1s;
-            }
-
-            nav.active ul li:nth-child(2) {
-                transition-delay: 0.2s;
-            }
-
-            nav.active ul li:nth-child(3) {
-                transition-delay: 0.3s;
-            }
-
-            nav.active ul li:nth-child(4) {
-                transition-delay: 0.4s;
-            }
-
-            nav.active ul li:nth-child(5) {
-                transition-delay: 0.5s;
-            }
+            nav.active ul li:nth-child(1) { transition-delay: 0.1s; }
+            nav.active ul li:nth-child(2) { transition-delay: 0.2s; }
+            nav.active ul li:nth-child(3) { transition-delay: 0.3s; }
+            nav.active ul li:nth-child(4) { transition-delay: 0.4s; }
+            nav.active ul li:nth-child(5) { transition-delay: 0.5s; }
 
             nav a {
                 font-size: 1.8rem;
@@ -1377,12 +1370,12 @@
             .typing-container { 
                 font-size: 1.6rem; 
                 height: 40px; 
-                width: 100%; /* Take full width of parent */
+                width: 100%; 
                 margin: 0 auto 1.5rem auto; 
-                justify-content: center; /* Centers the text perfectly */
+                justify-content: center; 
             }
             
-            /* 2. NEW: Mobile Swipe Indicator styling and animation */
+            /* Mobile Swipe Indicator styling and animation */
             .swipe-indicator {
                 display: flex;
                 justify-content: center;
@@ -1484,9 +1477,6 @@
                 background: rgba(30, 41, 59, 0.8);
             }
         }
-
-
-
     </style>
 </head>
 
