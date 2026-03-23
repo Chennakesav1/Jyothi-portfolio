@@ -183,7 +183,7 @@
         }
 
         .menu-toggle:active {
-            transform: scale(0.85);
+            
             color: var(--accent-main);
         }
 
@@ -333,15 +333,13 @@
             font-weight: 500;
         }
 
+        /* UPDATE THIS BLOCK */
         @media (hover: hover) {
-            .f-icon-container:hover {
-                transform: translateY(-5px);
-                color: var(--text-main);
-                text-shadow: var(--accent-glow);
-            }
-
-            .f-icon-container:hover span {
-                color: var(--text-main);
+            .floating-email:hover {
+                background: var(--accent-main);
+                color: var(--bg-dark);
+                box-shadow: var(--accent-glow);
+                /* Deleted the transform: translateY(-5px); line */
             }
         }
 
@@ -1492,13 +1490,13 @@
     <div class="cursor-dot"></div>
     <div class="cursor-outline"></div>
 
-    <a href="#contact" class="floating-email interactive-btn" title="Hire Me">
+    <a href="#contact" class="floating-email" title="Hire Me"></a>
         <i class="fas fa-envelope"></i>
     </a>
 
     <header>
         <a href="#home" class="logo">JYOTHI<span>.</span></a>
-        <div class="menu-toggle interactive-btn" id="hamburger"><i class="fas fa-bars"></i></div>
+        <div class="menu-toggle" id="hamburger"><i class="fas fa-bars"></i></div>
         <nav id="nav-overlay">
             <ul>
                 <li><a href="#home" class="nav-link">Home</a></li>
