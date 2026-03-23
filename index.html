@@ -248,7 +248,7 @@
             letter-spacing: -1px;
         }
 
-        /* Updated Typing Effect Styling */
+        /* Updated Typing Effect Styling - PERFORMANCE FIXED */
         .typing-container {
             font-size: clamp(1.8rem, 3vw, 2.5rem);
             color: var(--accent-main);
@@ -259,6 +259,10 @@
             display: flex;
             align-items: center;
             white-space: nowrap;
+            /* NEW: Hardware acceleration & paint containment to stop lag */
+            contain: layout paint;
+            transform: translateZ(0);
+            will-change: contents;
         }
 
         .typed-text {
@@ -1367,12 +1371,14 @@
                 height: 310px;
             }
 
+            /* PERFORMANCE FIXED: Stops layout thrashing on mobile */
             .typing-container { 
                 font-size: 1.6rem; 
                 height: 40px; 
-                width: 100%; 
+                width: 280px; /* Fixed width stops the flexbox calculation lag */
+                max-width: 100%;
                 margin: 0 auto 1.5rem auto; 
-                justify-content: center; 
+                justify-content: center; /* Types left-to-right instead of pushing left */
             }
             
             /* Mobile Swipe Indicator styling and animation */
